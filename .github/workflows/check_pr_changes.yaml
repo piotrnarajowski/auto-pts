@@ -1,0 +1,46 @@
+name: Check PR Changes and Comment
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  check_changes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: List changed files
+        id: list_files
+        run: |
+          git diff --name-only origin/master...HEAD > changed_files.txt
+
+      - name: Check for changes in autopts/wid directory
+        id: check_changes
+        run: |
+          if grep -q "^autopts/wid/" changed_files.txt; then
+            echo "::set-output name=changes_detected::true"
+          else
+            echo "::set-output name=changes_detected::false"
+          fi
+
+      - name: Post comment on PR if changes detected
+        if: steps.check_changes.outputs.changes_detected == 'true'
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const context = github.context;
+            const owner = context.payload.repository.owner.login;
+            const repo = context.payload.repository.name;
+            const prNumber = context.payload.pull_request.number;
+            const commentBody = '#AutoPTS run zephyr MCP';
+            github.issues.createComment({
+              owner,
+              repo,
+              issue_number: prNumber,
+              body: commentBody
+            });
