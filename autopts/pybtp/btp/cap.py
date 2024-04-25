@@ -58,6 +58,7 @@ def cap_command_rsp_succ(timeout=20.0):
     logging.debug("%s", cap_command_rsp_succ.__name__)
 
     iutctl = get_iut()
+    #test
 
     tuple_hdr, tuple_data = iutctl.btp_socket.read(timeout)
     logging.debug("received %r %r", tuple_hdr, tuple_data)
