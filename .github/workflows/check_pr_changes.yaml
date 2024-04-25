@@ -9,7 +9,7 @@ on:
 jobs:
   check_changes:
     runs-on: ubuntu-latest
-    if: github.run_number == 1
+    if: github.event_name == 'pull_request' && github.run_number == 1
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
