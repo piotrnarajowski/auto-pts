@@ -36,6 +36,7 @@ def hdl_wid_477(_: WIDParams):
         Please verify that the IUT starts alerting with a High Alert.
     """
     stack = get_stack()
+    # test
 
     stack.ias.wait_for_high_alert()
 
