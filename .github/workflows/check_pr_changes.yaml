@@ -54,6 +54,13 @@ jobs:
           extracted_names=$(echo "$extracted_names" | xargs)
           echo "extracted_names=$extracted_names" >> $GITHUB_OUTPUT
 
+      - name: Debug outputs
+        if: ${{ always() }}
+        run: |
+          echo "Changes detected: ${{ steps.check_changes.outputs.changes_detected }}"
+          echo "Extracted filenames: ${{ steps.extract_filenames.outputs.filenames }}"
+          echo "Parsed filenames: ${{ steps.parse_filenames.outputs.extracted_names }}"
+
       - name: Trigger cron on PR - zephyr
         if: steps.check_changes.outputs.changes_detected == 'true'
         uses: actions/github-script@v6
