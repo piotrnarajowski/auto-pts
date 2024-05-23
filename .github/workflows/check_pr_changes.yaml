@@ -13,11 +13,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       - name: Check for changes in autopts/wid directory
         id: check_changes
         run: |
+          git fetch origin master
+          base_sha=$(git merge-base HEAD origin/master)
           if git diff --name-only HEAD^ HEAD -- autopts/wid/ | grep -q "."; then
             echo "changes_detected=true" >> $GITHUB_OUTPUT
           else
