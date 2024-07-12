@@ -27,11 +27,16 @@ jobs:
       - name: Set output
         id: set_output
         run: |
-            echo "changed_files=$(cat changed_files_formatted.txt)" >> $GITHUB_OUTPUT
+            if [ -f changed_files_formatted.txt ]; then
+              cat changed_files_formatted.txt
+              echo "changed_files=$(cat changed_files_formatted.txt)" >> $GITHUB_OUTPUT
+            else
+              echo "changed_files=No changes detected" >> $GITHUB_OUTPUT
+            fi
 
       - name: Print changed files
         run: |
-          echo "Changed files:"${changed_files}""
+          echo "Changed files: ${{ steps.set_output.outputs.changed_files }}"
 
       - name: Post comment on PR
         uses: peter-evans/create-or-update-comment@v4
