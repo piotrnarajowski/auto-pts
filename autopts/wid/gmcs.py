@@ -35,6 +35,7 @@ def gmcs_wid_hdl(wid, description, test_case_name):
 
 def hdl_wid_4(params: WIDParams):
     """Please configure an initial state to Inactive state"""
+    #test
     stack = get_stack()
 
     media_pl_state = btp.gmcs_inactive_state_set()

@@ -9,8 +9,6 @@ def main():
         print("changed_files.txt not found. No changes detected.")
         return
 
-    # filenames = [os.path.splitext(os.path.basename(file.strip()))[0].upper() for file in changed_files]
-
     filenames = []
 
     for file in changed_files:
