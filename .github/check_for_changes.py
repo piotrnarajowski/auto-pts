@@ -11,7 +11,7 @@ def main():
 
     # filenames = [os.path.splitext(os.path.basename(file.strip()))[0].upper() for file in changed_files]
 
-    filenames = []
+    filenames = ['CAP']
 
     for file in changed_files:
         stripped_file = file.strip()
