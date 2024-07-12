@@ -50,10 +50,10 @@ jobs:
               body: `#AutoPTS run mynewt ${{ steps.set_output.outputs.changed_files }} --test-case-limit 10`
             });
 
-#      - name: Post comment on PR
-#        uses: peter-evans/create-or-update-comment@v4
-#        with:
-#          token: ${{ secrets.GITHUB_TOKEN }}
-#          issue-number: ${{ github.event.pull_request.number }}
-#          body: |
-#            \#AutoPTS run mynewt ${{ steps.set_output.outputs.changed_files }} --test-case-limit 10
+      - name: Post comment on PR
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            \#AutoPTS run mynewt ${{ steps.set_output.outputs.changed_files }} --test-case-limit 10
