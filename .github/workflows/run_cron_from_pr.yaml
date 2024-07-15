@@ -38,8 +38,8 @@ jobs:
         run: |
           echo "Changed files: ${{ steps.set_output.outputs.changed_files }}"
 
-      - name: Post comment on PR
-        uses: peter-evans/create-or-update-comment@v4
+      - name: Comment on PR
+        uses: actions/github-script@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
