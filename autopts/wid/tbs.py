@@ -47,7 +47,6 @@ def hdl_wid_101(params: WIDParams):
 
 def hdl_wid_106(params: WIDParams):
     """Please make a call ID (1) to the Remotely Held state."""
-
     call_id = re.findall(r'Please make a call ID \((\d+)\)', params.description)
     btp.tbs_remote_hold_call(int(call_id[0]))
 
