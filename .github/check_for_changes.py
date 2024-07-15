@@ -13,11 +13,11 @@ def main():
     print(f"Contents of current directory: {contents}")
 
     # Debug: List all files and directories recursively from the current directory
-    for root, dirs, files in os.walk(current_dir):
-        for name in dirs:
-            print(f"Directory: {os.path.join(root, name)}")
-        for name in files:
-            print(f"File: {os.path.join(root, name)}")
+    # for root, dirs, files in os.walk(current_dir):
+    #     for name in dirs:
+    #         print(f"Directory: {os.path.join(root, name)}")
+    #     for name in files:
+    #         print(f"File: {os.path.join(root, name)}")
 
     contents2 = os.listdir('/home/runner/work/auto-pts/auto-pts/autopts')
     print(f"Check another directory: {contents2}")
