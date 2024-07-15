@@ -38,18 +38,6 @@ jobs:
         run: |
           echo "Changed files: ${{ steps.set_output.outputs.changed_files }}"
 
-      - name: Comment on PR
-        uses: actions/github-script@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            await github.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: data.pull_request,
-              body: `#AutoPTS run mynewt ${{ steps.set_output.outputs.changed_files }} --test-case-limit 10`
-            });
-
       - name: Post comment on PR
         uses: peter-evans/create-or-update-comment@v4
         with:
