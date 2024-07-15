@@ -22,6 +22,10 @@ jobs:
         id: check_changes
         run: python .github/check_for_changes.py
 
+      - name: Print Current Working Directory
+        run: |
+          pwd
+
       - name: Set output
         id: set_output
         run: echo "changed_files=$(cat changed_files_formatted.txt)" >> $GITHUB_OUTPUT
