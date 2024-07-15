@@ -4,11 +4,19 @@ import sys
 
 
 def main():
+    os.chdir('/home/runner/work/auto-pts')
+
+
     # Debug: Check the current working directory
-    print(f"Current working directory: {os.getcwd()}")
+    current_dir = os.getcwd()
+    print(f"Current working directory: {current_dir}")
 
     # Debug: Check the contents of the current directory
-    print(f"Contents of current directory: {os.listdir(os.getcwd())}")
+    contents = os.listdir(current_dir)
+    print(f"Contents of current directory: {contents}")
+
+    os.listdir('/home/runner/work/auto-pts/auto-pts/autopts')
+    print(f"Check another directory: /home/runner/work/auto-pts/auto-pts/autopts")
 
     # Check if the target directory exists
     if not os.path.exists('autopts/wid/'):
