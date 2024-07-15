@@ -4,9 +4,6 @@ import sys
 
 
 def main():
-    os.chdir('/home/runner/work/auto-pts')
-
-
     # Debug: Check the current working directory
     current_dir = os.getcwd()
     print(f"Current working directory: {current_dir}")
@@ -15,8 +12,15 @@ def main():
     contents = os.listdir(current_dir)
     print(f"Contents of current directory: {contents}")
 
-    os.listdir('/home/runner/work/auto-pts/auto-pts/autopts')
-    print(f"Check another directory: /home/runner/work/auto-pts/auto-pts/autopts")
+    # Debug: List all files and directories recursively from the current directory
+    for root, dirs, files in os.walk(current_dir):
+        for name in dirs:
+            print(f"Directory: {os.path.join(root, name)}")
+        for name in files:
+            print(f"File: {os.path.join(root, name)}")
+
+    contents2 = os.listdir('/home/runner/work/auto-pts/auto-pts/autopts')
+    print(f"Check another directory: {contents2}")
 
     # Check if the target directory exists
     if not os.path.exists('autopts/wid/'):
