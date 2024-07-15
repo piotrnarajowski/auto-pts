@@ -10,6 +10,11 @@ def main():
     # Debug: Check the contents of the current directory
     print(f"Contents of current directory: {os.listdir(os.getcwd())}")
 
+    # Check if the target directory exists
+    if not os.path.exists('autopts/wid/'):
+        print("Target directory 'autopts/wid/' does not exist.")
+        return
+
     try:
         result = subprocess.run(
             ['git', 'diff', '--name-only', 'HEAD^', 'HEAD', '--', 'autopts/wid/'],
@@ -22,7 +27,8 @@ def main():
         print(f"Error running git diff: {e.stderr}")
         changed_files = []
 
-    if not changed_files or changed_files == ['']:
+    # Check if the target directory exists
+    if not changed_files or all(file == '' for file in changed_files):
         print("No changes detected in autopts/wid directory.")
         changed_files = []
 
