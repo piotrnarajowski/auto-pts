@@ -645,6 +645,7 @@ def gap_disconn(bd_addr=None, bd_addr_type=None):
 
 
 def verify_not_connected(description):
+    #test
     logging.debug("%s", verify_not_connected.__name__)
     stack = get_stack()
 
