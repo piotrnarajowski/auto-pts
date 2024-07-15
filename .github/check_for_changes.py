@@ -1,15 +1,22 @@
 import os
+import subprocess
 import sys
+
 
 def main():
     try:
-        with open('changed_files.txt', 'r') as f:
-            changed_files = f.readlines()
-    except FileNotFoundError:
-        print("changed_files.txt not found. No changes detected.")
-        return
+        result = subprocess.run(
+            ['git', 'diff', '--name-only', 'HEAD^', 'HEAD', '--', 'autopts/wid/'],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
+        )
+        changed_files = result.stdout.strip().split('\n')
+    except subprocess.CalledProcessError as e:
+        print(f"Error running git diff: {e.stderr}")
+        changed_files = []
 
-    # filenames = [os.path.splitext(os.path.basename(file.strip()))[0].upper() for file in changed_files]
+    if not changed_files or changed_files == ['']:
+        print("No changes detected in autopts/wid directory.")
+        changed_files = []
 
     filenames = []
 

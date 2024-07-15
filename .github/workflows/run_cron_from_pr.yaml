@@ -20,19 +20,11 @@ jobs:
 
       - name: Check for changes in autopts/wid directory
         id: check_changes
-        run: |
-          git diff --name-only HEAD^ HEAD -- autopts/wid/ > changed_files.txt
-          python .github/check_for_changes.py
+        run: python .github/check_for_changes.py
 
       - name: Set output
         id: set_output
-        run: |
-            if [ -f changed_files_formatted.txt ]; then
-              cat changed_files_formatted.txt
-              echo "changed_files=$(cat changed_files_formatted.txt)" >> $GITHUB_OUTPUT
-            else
-              echo "changed_files=No changes detected" >> $GITHUB_OUTPUT
-            fi
+        run: echo "changed_files=$(cat changed_files_formatted.txt)" >> $GITHUB_OUTPUT
 
       - name: Print changed files
         run: |
