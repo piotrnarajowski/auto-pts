@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Set execute permissions for script
         run: chmod +x .github/check_for_changes.py
