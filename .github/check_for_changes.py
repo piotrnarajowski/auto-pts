@@ -27,7 +27,7 @@ def main():
 
     try:
         commit = "HEAD"
-        upstream = "master"
+        upstream = "origin/master"
         mb = run_cmd(f"git merge-base {upstream} {commit}")
         upstream = mb[0]
 
@@ -36,8 +36,13 @@ def main():
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
         )
 
-        # Debug: Print the result of the git diff command
+        rev_parse = subprocess.run(
+            ['git', 'rev-parse', 'HEAD', 'HEAD^', 'master', 'origin/master'],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
+        )
+        print(f"Rev parse result: HEAD, HEAD^, master. origin/master {rev_parse}")
         print(f"git diff output: {result.stdout}")
+
         changed_files = result.stdout.strip().split('\n')
     except subprocess.CalledProcessError as e:
         print(f"Error running git diff: {e.stderr}")
