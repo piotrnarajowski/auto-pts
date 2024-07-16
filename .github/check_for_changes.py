@@ -6,6 +6,8 @@ import sys
 def main():
     base_ref = os.environ.get('GITHUB_BASE_REF')
     head_ref = os.environ.get('GITHUB_HEAD_REF')
+    print(f"Base ref {base_ref}")
+    print(f"Head ref {head_ref}")
     # Debug: Check the current working directory
     current_dir = os.getcwd()
     print(f"Current working directory: {current_dir}")
@@ -31,9 +33,14 @@ def main():
 
     try:
         result = subprocess.run(
-            ['git', 'diff', '--name-only', 'HEAD~1', 'HEAD', '--', 'autopts/wid/'],
+            ['git', 'diff', '--name-only', 'HEAD^', 'HEAD', '--', 'autopts/wid/'],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
         )
+        result2 = subprocess.run(
+            ['git', 'status'],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
+        )
+        print(f"git  status output: {result2}")
         # Debug: Print the result of the git diff command
         print(f"git diff output: {result.stdout}")
         changed_files = result.stdout.strip().split('\n')
