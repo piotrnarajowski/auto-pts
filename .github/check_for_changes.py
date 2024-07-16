@@ -33,7 +33,7 @@ def main():
 
     try:
         result = subprocess.run(
-            ['git', 'diff', '--name-only', 'HEAD^', 'HEAD', '--', 'autopts/wid/'],
+            ['git', 'diff', '--name-only', head_ref, base_ref, '--', 'autopts/wid/'],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
         )
         result2 = subprocess.run(
