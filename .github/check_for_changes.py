@@ -3,11 +3,12 @@ import subprocess
 import sys
 
 
+def run_cmd(cmd: str) -> list[str]:
+    out = subprocess.check_output(cmd, text=True, shell=True)
+    return out.splitlines()
+
+
 def main():
-    base_ref = os.environ.get('GITHUB_BASE_REF')
-    head_ref = os.environ.get('GITHUB_HEAD_REF')
-    print(f"Base ref {base_ref}")
-    print(f"Head ref {head_ref}")
     # Debug: Check the current working directory
     current_dir = os.getcwd()
     print(f"Current working directory: {current_dir}")
@@ -15,13 +16,6 @@ def main():
     # Debug: Check the contents of the current directory
     contents = os.listdir(current_dir)
     print(f"Contents of current directory: {contents}")
-
-    # Debug: List all files and directories recursively from the current directory
-    # for root, dirs, files in os.walk(current_dir):
-    #     for name in dirs:
-    #         print(f"Directory: {os.path.join(root, name)}")
-    #     for name in files:
-    #         print(f"File: {os.path.join(root, name)}")
 
     contents2 = os.listdir('/home/runner/work/auto-pts/auto-pts/autopts')
     print(f"Check another directory: {contents2}")
@@ -32,15 +26,16 @@ def main():
         return
 
     try:
+        commit = "HEAD"
+        upstream = "myfork/master"
+        mb = run_cmd(f"git merge-base {upstream} {commit}")
+        upstream = mb[0]
+
         result = subprocess.run(
-            ['git', 'diff', '--name-only', head_ref, base_ref, '--', 'autopts/wid/'],
+            ['git', 'diff', '--name-only', upstream, commit, '--', 'autopts/wid/'],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
         )
-        result2 = subprocess.run(
-            ['git', 'status'],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
-        )
-        print(f"git  status output: {result2}")
+
         # Debug: Print the result of the git diff command
         print(f"git diff output: {result.stdout}")
         changed_files = result.stdout.strip().split('\n')
