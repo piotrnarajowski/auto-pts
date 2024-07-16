@@ -4,6 +4,8 @@ import sys
 
 
 def main():
+    base_ref = os.environ.get('GITHUB_BASE_REF')
+    head_ref = os.environ.get('GITHUB_HEAD_REF')
     # Debug: Check the current working directory
     current_dir = os.getcwd()
     print(f"Current working directory: {current_dir}")
@@ -29,7 +31,7 @@ def main():
 
     try:
         result = subprocess.run(
-            ['git', 'diff', '--name-only', '$GITHUB_BASE_REF', '$GITHUB_HEAD_REF', '--', 'autopts/wid/'],
+            ['git', 'diff', '--name-only', base_ref, head_ref, '--', 'autopts/wid/'],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
         )
         # Debug: Print the result of the git diff command
