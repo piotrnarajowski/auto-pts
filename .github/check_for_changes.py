@@ -26,13 +26,13 @@ def main():
         return
 
     try:
-        commit = "HEAD"
-        upstream = "origin/master"
-        mb = run_cmd(f"git merge-base {upstream} {commit}")
-        upstream = mb[0]
+        # commit = "HEAD"
+        # upstream = "origin/master"
+        # mb = run_cmd(f"git merge-base {upstream} {commit}")
+        # upstream = mb[0]
 
         result = subprocess.run(
-            ['git', 'diff', '--name-only', upstream, commit, '--', 'autopts/wid/'],
+            ['git', 'diff', '--name-only', 'HEAD^', 'HEAD', '--', 'autopts/wid/'],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
         )
 
