@@ -26,10 +26,17 @@ def main():
         return
 
     try:
-        commit = "HEAD"
-        upstream = "origin/master"
+        if len(sys.argv) > 1:
+            commit = sys.argv[1]
+        else:
+            commit = "HEAD"
+        if len(sys.argv) > 2:
+            upstream = sys.argv[2]
+        else:
+            upstream = "origin/master"
         mb = run_cmd(f"git merge-base {upstream} {commit}")
         upstream = mb[0]
+
         remote = subprocess.run(
             ['git', 'remote', '-v'],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
@@ -37,17 +44,18 @@ def main():
 
         print(f"Git remote -v: {remote}")
 
-        result = subprocess.run(
-            ['git', 'diff', '--name-only', 'HEAD^', 'HEAD', '--', 'autopts/wid/'],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
-        )
-
         rev_parse = subprocess.run(
             ['git', 'rev-parse', 'HEAD', 'HEAD^', 'master', 'origin/master'],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
         )
 
         print(f"Rev parse result: HEAD, HEAD^, master. origin/master {rev_parse}")
+
+        result = subprocess.run(
+            ['git', 'diff', '--name-only', upstream, commit, '--', 'autopts/wid/'],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
+        )
+
         print(f"git diff output: {result.stdout}")
 
         changed_files = result.stdout.strip().split('\n')
