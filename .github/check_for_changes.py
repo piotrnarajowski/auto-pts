@@ -40,6 +40,13 @@ def main():
             ['git', 'rev-parse', 'HEAD', 'HEAD^', 'master', 'origin/master'],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
         )
+
+        remote = subprocess.run(
+            ['git', 'remote', '-v'],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
+        )
+
+        print(f"Git remote -v: {remote}")
         print(f"Rev parse result: HEAD, HEAD^, master. origin/master {rev_parse}")
         print(f"git diff output: {result.stdout}")
 
