@@ -31,7 +31,7 @@ def main():
 
     try:
         result = subprocess.run(
-            ['git', 'diff', '--name-only', base_ref, head_ref, '--', 'autopts/wid/'],
+            ['git', 'diff', '--name-only', 'HEAD~1', 'HEAD', '--', 'autopts/wid/'],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
         )
         # Debug: Print the result of the git diff command
