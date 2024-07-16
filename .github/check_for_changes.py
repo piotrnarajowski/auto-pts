@@ -26,10 +26,17 @@ def main():
         return
 
     try:
-        # commit = "HEAD"
-        # upstream = "origin/master"
-        # mb = run_cmd(f"git merge-base {upstream} {commit}")
-        # upstream = mb[0]
+        #test
+        commit = "HEAD"
+        upstream = "origin/master"
+        mb = run_cmd(f"git merge-base {upstream} {commit}")
+        upstream = mb[0]
+        remote = subprocess.run(
+            ['git', 'remote', '-v'],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
+        )
+
+        print(f"Git remote -v: {remote}")
 
         result = subprocess.run(
             ['git', 'diff', '--name-only', 'HEAD^', 'HEAD', '--', 'autopts/wid/'],
@@ -41,12 +48,6 @@ def main():
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
         )
 
-        remote = subprocess.run(
-            ['git', 'remote', '-v'],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
-        )
-
-        print(f"Git remote -v: {remote}")
         print(f"Rev parse result: HEAD, HEAD^, master. origin/master {rev_parse}")
         print(f"git diff output: {result.stdout}")
 
