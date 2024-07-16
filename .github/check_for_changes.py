@@ -27,7 +27,7 @@ def main():
 
     try:
         commit = "HEAD"
-        upstream = "myfork/master"
+        upstream = "master"
         mb = run_cmd(f"git merge-base {upstream} {commit}")
         upstream = mb[0]
 
