@@ -37,6 +37,9 @@ def main():
         mb = run_cmd(f"git merge-base {upstream} {commit}")
         upstream = mb[0]
 
+        base_ref = os.environ.get('GITHUB_BASE_REF')
+        head_ref = os.environ.get('GITHUB_HEAD_REF')
+
         # remote = subprocess.run(
         #     ['git', 'remote', '-v'],
         #     stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
@@ -52,7 +55,7 @@ def main():
         # print(f"Rev parse result: HEAD, HEAD^, master. origin/master {rev_parse}")
 
         result = subprocess.run(
-            ['git', 'diff', '--name-only', 'GITHUB_BASE_REF', 'GITHUB_HEAD_REF', '--', 'autopts/wid/'],
+            ['git', 'diff', '--name-only', base_ref, head_ref, '--', 'autopts/wid/'],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
         )
 
