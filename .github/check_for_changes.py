@@ -10,9 +10,8 @@ def run_cmd(cmd: str) -> list[str]:
 
 def main():
     # Debug: Check the current working directory
-    print(os.environ)
-    current_dir = os.getcwd()
-    print(f"Current working directory: {current_dir}")
+    # current_dir = os.getcwd()
+    # print(f"Current working directory: {current_dir}")
 
     # Debug: Check the contents of the current directory
     # contents = os.listdir(current_dir)
@@ -38,22 +37,22 @@ def main():
         mb = run_cmd(f"git merge-base {upstream} {commit}")
         upstream = mb[0]
 
-        remote = subprocess.run(
-            ['git', 'remote', '-v'],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
-        )
+        # remote = subprocess.run(
+        #     ['git', 'remote', '-v'],
+        #     stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
+        # )
 
-        print(f"Git remote -v: {remote}")
+        # print(f"Git remote -v: {remote}")/
 
-        rev_parse = subprocess.run(
-            ['git', 'rev-parse', 'HEAD', 'HEAD^', 'master', 'origin/master'],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
-        )
-
-        print(f"Rev parse result: HEAD, HEAD^, master. origin/master {rev_parse}")
+        # rev_parse = subprocess.run(
+        #     ['git', 'rev-parse', 'HEAD', 'HEAD^', 'master', 'origin/master'],
+        #     stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
+        # )
+        #
+        # print(f"Rev parse result: HEAD, HEAD^, master. origin/master {rev_parse}")
 
         result = subprocess.run(
-            ['git', 'diff', '--name-only', upstream, commit, '--', 'autopts/wid/'],
+            ['git', 'diff', '--name-only', 'GITHUB_BASE_REF', 'GITHUB_HEAD_REF', '--', 'autopts/wid/'],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
         )
 
