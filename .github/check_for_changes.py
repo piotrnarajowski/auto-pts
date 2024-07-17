@@ -10,15 +10,16 @@ def run_cmd(cmd: str) -> list[str]:
 
 def main():
     # Debug: Check the current working directory
+    print(os.environ)
     current_dir = os.getcwd()
     print(f"Current working directory: {current_dir}")
 
     # Debug: Check the contents of the current directory
-    contents = os.listdir(current_dir)
-    print(f"Contents of current directory: {contents}")
+    # contents = os.listdir(current_dir)
+    # print(f"Contents of current directory: {contents}")
 
-    contents2 = os.listdir('/home/runner/work/auto-pts/auto-pts/autopts')
-    print(f"Check another directory: {contents2}")
+    # contents2 = os.listdir('/home/runner/work/auto-pts/auto-pts/autopts')
+    # print(f"Check another directory: {contents2}")
 
     # Check if the target directory exists
     if not os.path.exists('autopts/wid/'):
