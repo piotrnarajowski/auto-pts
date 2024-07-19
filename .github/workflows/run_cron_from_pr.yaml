@@ -1,0 +1,43 @@
+name: Check PR for changes in autopts/wid/
+
+on:
+  pull_request_target:
+    types: [ready_for_review, opened]
+    branches:
+      - master
+
+jobs:
+  check_changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Set execute permissions for script
+        run: chmod +x .github/check_for_changes.py
+
+      - name: Check for changes in autopts/wid directory
+        id: check_changes
+        run: python .github/check_for_changes.py
+
+      - name: Print Current Working Directory
+        run: |
+          pwd
+
+      - name: Set output
+        id: set_output
+        run: echo "changed_files=$(cat changed_files_formatted.txt)" >> $GITHUB_OUTPUT
+
+      - name: Print changed files
+        run: |
+          echo "Changed files: ${{ steps.set_output.outputs.changed_files }}"
+
+      - name: Post comment on PR
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            \#AutoPTS run mynewt ${{ steps.set_output.outputs.changed_files }} --test-case-limit 10
