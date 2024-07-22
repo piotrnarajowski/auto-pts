@@ -15,16 +15,13 @@ def main():
         return
 
     try:
-        if len(sys.argv) > 1:
-            commit = sys.argv[1]
-        else:
-            commit = 'HEAD'
-        if len(sys.argv) > 2:
-            upstream = sys.argv[2]
-        else:
-            upstream = 'origin/master'
+        commit = 'HEAD'
+        upstream = 'master'
+
         mb = run_cmd(f"git merge-base {upstream} {commit}")
         upstream = mb[0]
+
+        print(f"upstream: {upstream}")
 
         result = subprocess.run(
             ['git', 'diff', '--name-only', upstream, commit, '--', 'autopts/wid/'],
