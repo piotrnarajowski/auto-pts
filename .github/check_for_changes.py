@@ -15,24 +15,16 @@ def main():
         return
 
     try:
-        pr = os.environ.get('PR_NUMBER')
-        string = f"refs/pull/{pr}/merge"
+        print(os.environ)
+        pr_number = os.environ.get('PR_NUMBER')
+        fetch_str = f"refs/pull/{pr_number}/merge"
         fetch = subprocess.run(
-            ['git', 'fetch', 'origin', string],
+            ['git', 'fetch', 'origin', fetch_str],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
         )
 
-        print(f"git fetch origin refs/pull/: {fetch}")
-
-        commit = os.environ.get('FETCH_HEAD')
-
-        # mb = run_cmd(f"git merge-base {upstream} {commit}")
-        # upstream = mb[0]
-        #
-        print(f"fetch head: {commit}")
-
         result = subprocess.run(
-            ['git', 'diff', '--name-only', 'HEAD', commit, '--', 'autopts/wid/'],
+            ['git', 'diff', '--name-only', 'HEAD', 'FETCH_HEAD', '--', 'autopts/wid/'],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
         )
 
