@@ -1,10 +1,13 @@
 name: Check PR for changes in autopts/wid/
 
 on:
-  pull_request_target:
+  pull_request:
     types: [ready_for_review, opened]
     branches:
       - master
+
+env:
+  PR_NUMBER: ${{ github.event.number }}
 
 jobs:
   check_changes:
@@ -14,6 +17,12 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
+
+      - name: Display PR Number (debug)
+        run: echo "PR Number is ${{ env.PR_NUMBER }}"
+
+      - name: Fetch PR refs
+        run: git fetch origin pull/${{ env.PR_NUMBER }}/head:pr-${{ env.PR_NUMBER }}
 
       - name: Check for changes in autopts/wid directory
         id: check_changes
