@@ -15,16 +15,15 @@ def main():
         return
 
     try:
-        commit = 'HEAD'
-        upstream = 'master'
+        commit = os.environ.get('PR_NUMBER')
 
-        mb = run_cmd(f"git merge-base {upstream} {commit}")
-        upstream = mb[0]
-
-        print(f"upstream: {upstream}")
+        # mb = run_cmd(f"git merge-base {upstream} {commit}")
+        # upstream = mb[0]
+        #
+        # print(f"upstream: {upstream}")
 
         result = subprocess.run(
-            ['git', 'diff', '--name-only', upstream, commit, '--', 'autopts/wid/'],
+            ['git', 'diff', '--name-only', 'HEAD', commit, '--', 'autopts/wid/'],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
         )
 
