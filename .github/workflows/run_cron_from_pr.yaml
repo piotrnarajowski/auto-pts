@@ -18,40 +18,42 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Display PR Number (debug)
-        run: echo "PR Number is ${{ env.PR_NUMBER }}"
-
       - name: Check for changes in autopts/wid directory
         id: check_changes
         run: |
           python .github/check_for_changes.py
-          if [ -s changed_files_formatted.txt ]; then
+          if [ -z changed_files_formatted.txt ]; then
             echo "changes_detected=true" >> $GITHUB_OUTPUT
           else
             echo "changes_detected=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
-      - name: Print Current Working Directory
-        run: |
-          pwd
-
       - name: Set output
         id: set_output
-        if: ${{ steps.check_changes.outputs.changes_detected }} == 'true'
+        if: ( steps.check_changes.outputs.changes_detected == 'true' )
         run: |
           echo "changed_files=$(cat changed_files_formatted.txt)" >> $GITHUB_OUTPUT
 
       - name: Print changed
-        if: ${{ steps.check_changes.outputs.changes_detected }} == 'true'
+        if: ( steps.check_changes.outputs.changes_detected == 'true' )
         run: |
           echo "Changed files: ${{ steps.set_output.outputs.changed_files }}"
 
       - name: Post comment on PR
-        if: ${{ steps.check_changes.outputs.changes_detected }} == 'true'
+        if: ( steps.check_changes.outputs.changes_detected == 'true' )
         uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             \#AutoPTS run mynewt ${{ steps.set_output.outputs.changed_files }} --test-case-limit 10
+
+      - name: Post comment on PR
+        if: ( steps.check_changes.outputs.changes_detected == 'true' )
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            \#AutoPTS run zephyr ${{ steps.set_output.outputs.changed_files }} --test-case-limit 10

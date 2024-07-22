@@ -3,11 +3,6 @@ import subprocess
 import sys
 
 
-def run_cmd(cmd: str) -> list[str]:
-    out = subprocess.check_output(cmd, text=True, shell=True)
-    return out.splitlines()
-
-
 def main():
     # Check if the target directory exists
     if not os.path.exists('autopts/wid/'):
@@ -15,10 +10,10 @@ def main():
         return
 
     try:
-        print(os.environ)
         pr_number = os.environ.get('PR_NUMBER')
         fetch_str = f"refs/pull/{pr_number}/merge"
-        fetch = subprocess.run(
+
+        subprocess.run(
             ['git', 'fetch', 'origin', fetch_str],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
         )
