@@ -19,7 +19,7 @@ jobs:
         id: check_changes
         run: |
           python .github/check_for_changes.py
-          if [ changed_files_formatted.txt ]; then
+          if [ -s changed_files_formatted.txt ]; then
             echo "changes_detected=true" >> $GITHUB_OUTPUT
           else
             echo "changes_detected=false" >> $GITHUB_OUTPUT

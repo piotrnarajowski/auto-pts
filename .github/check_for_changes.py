@@ -18,19 +18,16 @@ def main():
         if len(sys.argv) > 1:
             commit = sys.argv[1]
         else:
-            commit = "HEAD"
+            commit = 'HEAD'
         if len(sys.argv) > 2:
             upstream = sys.argv[2]
         else:
-            upstream = "origin/master"
+            upstream = 'origin/master'
         mb = run_cmd(f"git merge-base {upstream} {commit}")
         upstream = mb[0]
 
-        base_ref = os.environ.get('GITHUB_BASE_REF')
-        head_ref = os.environ.get('GITHUB_HEAD_REF')
-
         result = subprocess.run(
-            ['git', 'diff', '--name-only', 'origin/master', base_ref, '--', 'autopts/wid/'],
+            ['git', 'diff', '--name-only', upstream, commit, '--', 'autopts/wid/'],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
         )
 
