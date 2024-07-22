@@ -11,7 +11,7 @@
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 # FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
 # more details.
-#
+# test
 from typing import NamedTuple
 
 from .wid import generic_wid_hdl

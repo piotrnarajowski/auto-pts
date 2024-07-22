@@ -34,6 +34,7 @@ def mics_wid_hdl(wid, description, test_case_name):
 def hdl_wid_20001(_: WIDParams):
     """Please prepare IUT into a connectable mode. Verify that the
     Implementation Under Test (IUT) can accept GATT connect request from PTS."""
+    #test
     stack = get_stack()
     btp.gap_set_conn()
     btp.gap_adv_ind_on(ad=stack.gap.ad)
