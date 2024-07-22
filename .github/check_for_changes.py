@@ -9,17 +9,6 @@ def run_cmd(cmd: str) -> list[str]:
 
 
 def main():
-    # Debug: Check the current working directory
-    # current_dir = os.getcwd()
-    # print(f"Current working directory: {current_dir}")
-
-    # Debug: Check the contents of the current directory
-    # contents = os.listdir(current_dir)
-    # print(f"Contents of current directory: {contents}")
-
-    # contents2 = os.listdir('/home/runner/work/auto-pts/auto-pts/autopts')
-    # print(f"Check another directory: {contents2}")
-
     # Check if the target directory exists
     if not os.path.exists('autopts/wid/'):
         print("Target directory 'autopts/wid/' does not exist.")
@@ -39,20 +28,6 @@ def main():
 
         base_ref = os.environ.get('GITHUB_BASE_REF')
         head_ref = os.environ.get('GITHUB_HEAD_REF')
-
-        # remote = subprocess.run(
-        #     ['git', 'remote', '-v'],
-        #     stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
-        # )
-
-        # print(f"Git remote -v: {remote}")/
-
-        # rev_parse = subprocess.run(
-        #     ['git', 'rev-parse', 'HEAD', 'HEAD^', 'master', 'origin/master'],
-        #     stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True
-        # )
-        #
-        # print(f"Rev parse result: HEAD, HEAD^, master. origin/master {rev_parse}")
 
         result = subprocess.run(
             ['git', 'diff', '--name-only', 'origin/master', base_ref, '--', 'autopts/wid/'],

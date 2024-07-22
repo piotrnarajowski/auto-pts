@@ -15,12 +15,16 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Set execute permissions for script
-        run: chmod +x .github/check_for_changes.py
-
       - name: Check for changes in autopts/wid directory
         id: check_changes
-        run: python .github/check_for_changes.py
+        run: |
+          python .github/check_for_changes.py
+          if [ changed_files_formatted.txt ]; then
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes_detected=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
 
       - name: Print Current Working Directory
         run: |
@@ -28,13 +32,17 @@ jobs:
 
       - name: Set output
         id: set_output
-        run: echo "changed_files=$(cat changed_files_formatted.txt)" >> $GITHUB_OUTPUT
+        if: ${{ steps.check_changes.outputs.changes_detected }} == 'true'
+        run: |
+          echo "changed_files=$(cat changed_files_formatted.txt)" >> $GITHUB_OUTPUT
 
-      - name: Print changed files
+      - name: Print changed
+        if: ${{ steps.check_changes.outputs.changes_detected }} == 'true'
         run: |
           echo "Changed files: ${{ steps.set_output.outputs.changed_files }}"
 
       - name: Post comment on PR
+        if: ${{ steps.check_changes.outputs.changes_detected }} == 'true'
         uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
