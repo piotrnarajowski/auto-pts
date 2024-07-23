@@ -22,26 +22,20 @@ jobs:
         id: check_changes
         run: |
           python .github/check_for_changes.py
-          if [ -z changed_files_formatted.txt ]; then
-            echo "changes_detected=true" >> $GITHUB_OUTPUT
-          else
-            echo "changes_detected=false" >> $GITHUB_OUTPUT
-            exit 0
-          fi
 
       - name: Set output
         id: set_output
-        if: ( steps.check_changes.outputs.changes_detected == 'true' )
+        if: env.CHANGES_DETECTED == 'true'
         run: |
           echo "changed_files=$(cat changed_files_formatted.txt)" >> $GITHUB_OUTPUT
 
       - name: Print changed
-        if: ( steps.check_changes.outputs.changes_detected == 'true' )
+        if: env.CHANGES_DETECTED == 'true'
         run: |
           echo "Changed files: ${{ steps.set_output.outputs.changed_files }}"
 
       - name: Post comment on PR
-        if: ( steps.check_changes.outputs.changes_detected == 'true' )
+        if: env.CHANGES_DETECTED == 'true'
         uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -50,7 +44,7 @@ jobs:
             \#AutoPTS run mynewt ${{ steps.set_output.outputs.changed_files }} --test-case-limit 10
 
       - name: Post comment on PR
-        if: ( steps.check_changes.outputs.changes_detected == 'true' )
+        if: env.CHANGES_DETECTED == 'true'
         uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
