@@ -33,18 +33,18 @@ jobs:
 
       - name: Set output
         id: set_output
-        if: [ "$CHANGES_DETECTED" -eq 1 ]; then
         run: |
-          echo "$CHANGES_DETECTED"
-          echo "changed_files=$(cat changed_files_formatted.txt)" >> $GITHUB_OUTPUT
+          if [ "$CHANGES_DETECTED" -eq 1 ]; then
+            echo "$CHANGES_DETECTED"
+            echo "changed_files=$(cat changed_files_formatted.txt)" >> $GITHUB_OUTPUT
 
       - name: Print changed
-        if: [ "$CHANGES_DETECTED" -eq 1 ]; then
         run: |
-          echo "Changed files: ${{ steps.set_output.outputs.changed_files }}"
+          if [ "$CHANGES_DETECTED" -eq 1 ]; then
+            echo "Changed files: ${{ steps.set_output.outputs.changed_files }}"
 
       - name: Post comment on PR
-        if: [ "$CHANGES_DETECTED" -eq 1 ]; then
+        if: env.CHANGES_DETECTED == '1'
         uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -53,7 +53,7 @@ jobs:
             \#AutoPTS run mynewt ${{ steps.set_output.outputs.changed_files }} --test-case-limit 10
 
       - name: Post comment on PR
-        if: [ "$CHANGES_DETECTED" -eq 1 ]; then
+        if: env.CHANGES_DETECTED == '1'
         uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
