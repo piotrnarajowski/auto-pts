@@ -35,10 +35,9 @@ def main():
         print("No changes detected in autopts/wid directory.")
         changed_files = []
     else:
-        with open(".env", "a") as env_file:
-            env_var = "CHANGES_DETECTED"
-            env_val = "true"
-            env_file.write(f"{env_var}={env_val}")
+        os.environ['CHANGES_DETECTED'] = '1'
+        with open('changes_detected.txt', 'w') as f:
+            f.write(os.environ['CHANGES_DETECTED'])
 
     filenames = []
 

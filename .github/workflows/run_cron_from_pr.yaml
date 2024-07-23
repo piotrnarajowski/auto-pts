@@ -8,6 +8,7 @@ on:
 
 env:
   PR_NUMBER: ${{ github.event.number }}
+  CHANGES_DETECTED: 0
 
 jobs:
   check_changes:
@@ -18,24 +19,32 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: Print initial CHANGES_DETECTED value
+        run:
+          echo "$CHANGES_DETECTED"
+          echo ${{ env.CHANGES_DETECTED }}
+
       - name: Check for changes in autopts/wid directory
         id: check_changes
         run: |
           python .github/check_for_changes.py
+          echo ${{ env.CHANGES_DETECTED }}
+          echo "$CHANGES_DETECTED"
 
       - name: Set output
         id: set_output
-        if: env.CHANGES_DETECTED == 'true'
+        if: [ "$CHANGES_DETECTED" -eq 1 ]; then
         run: |
+          echo "$CHANGES_DETECTED"
           echo "changed_files=$(cat changed_files_formatted.txt)" >> $GITHUB_OUTPUT
 
       - name: Print changed
-        if: env.CHANGES_DETECTED == 'true'
+        if: [ "$CHANGES_DETECTED" -eq 1 ]; then
         run: |
           echo "Changed files: ${{ steps.set_output.outputs.changed_files }}"
 
       - name: Post comment on PR
-        if: env.CHANGES_DETECTED == 'true'
+        if: [ "$CHANGES_DETECTED" -eq 1 ]; then
         uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -44,7 +53,7 @@ jobs:
             \#AutoPTS run mynewt ${{ steps.set_output.outputs.changed_files }} --test-case-limit 10
 
       - name: Post comment on PR
-        if: env.CHANGES_DETECTED == 'true'
+        if: [ "$CHANGES_DETECTED" -eq 1 ]; then
         uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
