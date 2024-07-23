@@ -42,6 +42,7 @@ def gatt_cl_wid_hdl(wid, description, test_case_name):
 #TODO: port all GATT wids to GATT Client service
 # wid handlers section begin
 def hdl_wid_1(_: WIDParams):
+    #test
     """
     Please prepare IUT into a connectable mode.
 

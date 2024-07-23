@@ -28,5 +28,6 @@ def gtbs_wid_hdl(wid, description, test_case_name):
 # wid handlers section begin
 def hdl_wid_1(params: WIDParams):
     # Example WID
+    #test
 
     return True
