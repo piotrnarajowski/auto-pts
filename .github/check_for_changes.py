@@ -34,6 +34,11 @@ def main():
     if not changed_files or all(file == '' for file in changed_files):
         print("No changes detected in autopts/wid directory.")
         changed_files = []
+    else:
+        with open(".env", "a") as env_file:
+            env_var = "CHANGES_DETECTED"
+            env_val = "true"
+            env_file.write(f"{env_var}={env_val}")
 
     filenames = []
 
