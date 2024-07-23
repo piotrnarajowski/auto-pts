@@ -7,7 +7,7 @@ def main():
     # Check if the target directory exists
     if not os.path.exists('autopts/wid/'):
         print("Target directory 'autopts/wid/' does not exist.")
-        return
+        sys.exit(1)
 
     try:
         pr_number = os.environ.get('PR_NUMBER')
@@ -46,7 +46,7 @@ def main():
             continue
 
         if name_wo_ext == "gatt_client":
-            name_wo_ext == "gatt_cl"
+            name_wo_ext = "gatt/cl"
 
         upper_name = name_wo_ext.upper()
         filenames.append(upper_name)
