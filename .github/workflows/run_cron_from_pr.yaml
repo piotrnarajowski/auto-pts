@@ -19,32 +19,20 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Print initial CHANGES_DETECTED value
-        run:
-          echo "$CHANGES_DETECTED"
-          echo ${{ env.CHANGES_DETECTED }}
-
       - name: Check for changes in autopts/wid directory
         id: check_changes
         run: |
           python .github/check_for_changes.py
-          echo ${{ env.CHANGES_DETECTED }}
-          echo "$CHANGES_DETECTED"
+          echo "Script exited with code $?"
 
       - name: Set output
         id: set_output
+        if: ${{ steps.check_changes.outcome == 'success' }}
         run: |
-          if [ "$CHANGES_DETECTED" -eq 1 ]; then
-            echo "$CHANGES_DETECTED"
-            echo "changed_files=$(cat changed_files_formatted.txt)" >> $GITHUB_OUTPUT
-
-      - name: Print changed
-        run: |
-          if [ "$CHANGES_DETECTED" -eq 1 ]; then
-            echo "Changed files: ${{ steps.set_output.outputs.changed_files }}"
+          echo "changed_files=$(cat changed_files_formatted.txt)" >> $GITHUB_OUTPUT
 
       - name: Post comment on PR
-        if: env.CHANGES_DETECTED == '1'
+        if: ${{ steps.check_changes.outcome == 'success' }}
         uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -53,7 +41,7 @@ jobs:
             \#AutoPTS run mynewt ${{ steps.set_output.outputs.changed_files }} --test-case-limit 10
 
       - name: Post comment on PR
-        if: env.CHANGES_DETECTED == '1'
+        if: ${{ steps.check_changes.outcome == 'success' }}
         uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

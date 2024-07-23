@@ -28,16 +28,12 @@ def main():
         changed_files = result.stdout.strip().split('\n')
     except subprocess.CalledProcessError as e:
         print(f"Error running git diff: {e.stderr}")
-        changed_files = []
+        sys.exit(1)
 
     # Check if the target directory exists
     if not changed_files or all(file == '' for file in changed_files):
         print("No changes detected in autopts/wid directory.")
-        changed_files = []
-    else:
-        os.environ['CHANGES_DETECTED'] = '1'
-        with open('changes_detected.txt', 'w') as f:
-            f.write(os.environ['CHANGES_DETECTED'])
+        sys.exit(1)
 
     filenames = []
 
@@ -60,6 +56,8 @@ def main():
 
     with open('changed_files_formatted.txt', 'w') as f:
         f.write(' '.join(filenames))
+
+    sys.exit(0)
 
 
 if __name__ == "__main__":
