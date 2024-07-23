@@ -8,7 +8,6 @@ on:
 
 env:
   PR_NUMBER: ${{ github.event.number }}
-  CHANGES_DETECTED: 0
 
 jobs:
   check_changes:
@@ -21,18 +20,19 @@ jobs:
 
       - name: Check for changes in autopts/wid directory
         id: check_changes
+        continue-on-error: true
         run: |
           python .github/check_for_changes.py
           echo "Script exited with code $?"
 
       - name: Set output
         id: set_output
-        if: ${{ steps.check_changes.outcome == 'success' }}
+        if: ${{ steps.check_changes.outcome == 'success' && success() || failure() }}
         run: |
           echo "changed_files=$(cat changed_files_formatted.txt)" >> $GITHUB_OUTPUT
 
       - name: Post comment on PR
-        if: ${{ steps.check_changes.outcome == 'success' }}
+        if: ${{ steps.check_changes.outcome == 'success' && success() || failure() }}
         uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -41,7 +41,7 @@ jobs:
             \#AutoPTS run mynewt ${{ steps.set_output.outputs.changed_files }} --test-case-limit 10
 
       - name: Post comment on PR
-        if: ${{ steps.check_changes.outcome == 'success' }}
+        if: ${{ steps.check_changes.outcome == 'success' && success() || failure()}}
         uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
