@@ -1,4 +1,4 @@
-name: Check PR for changes in autopts/wid/
+name: Check for changes in autopts/wid
 
 on:
   pull_request_target:
