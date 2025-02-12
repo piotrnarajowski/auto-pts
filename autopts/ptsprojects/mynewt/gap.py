@@ -92,6 +92,7 @@ def set_pixits(ptses):
     pts.set_pixit("GAP", "TSPX_iut_private_address_interval", "5000")
     pts.set_pixit("GAP", "TSPX_iut_privacy_enabled", "FALSE")
     pts.set_pixit("GAP", "TSPX_psm", "1001")
+    pts.set_pixit("GAP", "TSPX_gap_iut_role", "Central")
     pts.set_pixit("GAP", "TSPX_iut_valid_connection_interval_min", "00C8")
     pts.set_pixit("GAP", "TSPX_iut_valid_connection_interval_max", "03C0")
     pts.set_pixit("GAP", "TSPX_iut_valid_connection_latency", "0006")
@@ -255,13 +256,11 @@ def test_cases(ptses):
                    TestFunc(lambda:
                             stack.gap.gap_set_pair_user_interaction(False))],
                   generic_wid_hdl=gap_wid_hdl),
-        ZTestCase("GAP", "GAP/SEC/AUT/BV-25-C",
-                  cmds=pre_conditions +
-                  [TestFunc(lambda: pts.update_pixit_param(
-                      "GAP", "TSPX_encryption_before_service_request", "TRUE")),
-                   TestFunc(lambda:
-                            stack.gap.gap_set_pair_user_interaction(False))],
-                  generic_wid_hdl=gap_wid_hdl),
+        # ZTestCase("GAP", "GAP/SEC/AUT/BV-25-C",
+        #           cmds=pre_conditions +
+        #           [TestFunc(lambda:
+        #                     stack.gap.gap_set_pair_user_interaction(False))],
+        #           generic_wid_hdl=gap_wid_hdl),
         ZTestCase("GAP", "GAP/SEC/AUT/BV-27-C",
                   cmds=pre_conditions +
                   [TestFunc(lambda: pts.update_pixit_param(

@@ -54,14 +54,14 @@ def set_pixits(ptses):
     pts.set_pixit("L2CAP", "TSPX_pin_code", "0000")
     pts.set_pixit("L2CAP", "TSPX_delete_ltk", "FALSE")
     pts.set_pixit("L2CAP", "TSPX_flushto", "FFFF")
-    pts.set_pixit("L2CAP", "TSPX_inmtu", "02A0")
+    # pts.set_pixit("L2CAP", "TSPX_inmtu", "02A0")
     pts.set_pixit("L2CAP", "TSPX_no_fail_verdicts", "FALSE")
     pts.set_pixit("L2CAP", "TSPX_iut_supported_max_channels", "5")
     pts.set_pixit("L2CAP", "TSPX_IUT_mps", "0030")
     pts.set_pixit("L2CAP", "TSPX_outmtu", "02A0")
     pts.set_pixit("L2CAP", "TSPX_tester_mps", "0017")
     pts.set_pixit("L2CAP", "TSPX_tester_mtu", "02A0")
-    pts.set_pixit("L2CAP", "TSPX_iut_role_initiator", "FALSE")
+    pts.set_pixit("L2CAP", "TSPX_iut_role_initiator", "TRUE")
     pts.set_pixit("L2CAP", "TSPX_spsm", "0000")
     pts.set_pixit("L2CAP", "TSPX_psm", "0001")
     pts.set_pixit("L2CAP", "TSPX_psm_unsupported", "0000")
@@ -230,13 +230,13 @@ def test_cases(ptses):
     tc_list = []
 
     for tc_name in test_case_name_list:
-        if tc_name.startswith('L2CAP/ECFC'):
+        if tc_name in ('L2CAP/ECFC', 'L2CAP/LC/CFC'):
             instance = ZTestCase('L2CAP', tc_name,
                                  pre_conditions,
                                  generic_wid_hdl=l2cap_wid_hdl)
         else:
             instance = ZTestCase('L2CAP', tc_name,
-                                 pre_conditions,
+                                 common,
                                  generic_wid_hdl=l2cap_wid_hdl)
 
         for custom_tc in custom_test_cases:

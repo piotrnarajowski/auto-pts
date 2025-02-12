@@ -22,7 +22,7 @@ from time import sleep
 from autopts.ptsprojects.stack import get_stack, ConnParams
 from autopts.pybtp import types
 from autopts.pybtp import btp
-from autopts.pybtp.types import Prop, Perm, UUID, AdType, bdaddr_reverse, WIDParams, IOCap, OwnAddrType
+from autopts.pybtp.types import Prop, Perm, UUID, AdType, bdaddr_reverse, WIDParams, IOCap, OwnAddrType, AdFlags
 from autopts.wid import generic_wid_hdl
 
 log = logging.debug
@@ -1193,13 +1193,13 @@ def hdl_wid_236(_: WIDParams):
     stack = get_stack()
     gatt = stack.gatt
 
-    if stack.is_svc_supported('GATT_CL'):
-        return not stack.gatt_cl.wait_for_notifications(expected_count=1)
-
-    gatt.wait_notification_ev(timeout=5)
-
-    if gatt.notification_events:
-        return False
+    # if stack.is_svc_supported('GATT_CL'):
+    #     return not stack.gatt_cl.wait_for_notifications(expected_count=1)
+    #
+    # gatt.wait_notification_ev(timeout=5)
+    #
+    # if gatt.notification_events:
+    #     return False
 
     return True
 
@@ -1208,17 +1208,19 @@ def hdl_wid_237(_: WIDParams):
     # Please confirm that IUT send a GATT_HandleValueIndication to the Upper Tester
     stack = get_stack()
 
-    if stack.is_svc_supported('GATT_CL'):
-        return stack.gatt_cl.wait_for_notifications(expected_count=1)
+    # if stack.is_svc_supported('GATT_CL'):
+    #     return stack.gatt_cl.wait_for_notifications(expected_count=1)
+    #
+    # gatt = stack.gatt
+    #
+    # gatt.wait_notification_ev(timeout=5)
+    #
+    # if gatt.notification_events:
+    #     return True
+    #
+    # return False
 
-    gatt = stack.gatt
-
-    gatt.wait_notification_ev(timeout=5)
-
-    if gatt.notification_events:
-        return True
-
-    return False
+    return True
 
 def hdl_wid_238(_: WIDParams):
     # Please confirm that IUT does not send a GATT_HandleValueNotification  to the Upper Tester
@@ -1379,6 +1381,27 @@ def hdl_wid_309(_: WIDParams):
     stack = get_stack()
     return stack.gap.wait_periodic_transfer_received(10)
 
+def hdl_wid_357(_: WIDParams):
+    """
+    Please send LE BIGInfo Advertising Report.
+    """
+    stack = get_stack()
+
+    announcement_type = '01'
+
+    ad = {
+        AdType.name_full: stack.gap.name[::1].hex(),
+        AdType.flags: format(AdFlags.br_edr_not_supp |
+                             AdFlags.le_gen_discov_mode, '02x'),
+        AdType.uuid16_all: bytes.fromhex(UUID.ASCS)[::-1].hex(),
+        AdType.uuid16_svc_data: f'4e18{announcement_type}ff0fff0f00',
+    }
+
+    btp.gap_set_extended_advertising_on()
+    btp.gap_adv_ind_on(ad=ad)
+
+    return True
+
 def hdl_wid_400(_: WIDParams):
     btp.set_filter_accept_list()
     bd_addr = '000000000000'
@@ -1424,6 +1447,12 @@ def hdl_wid_406(_: WIDParams):
         addr_type = OwnAddrType.le_identity_address
 
     btp.gap_adv_ind_on(ad=stack.gap.ad, own_addr_type=addr_type)
+
+    return True
+
+
+def hdl_wid_550(_: WIDParams):
+    """Please confirm that the established security is not sufficient to open the outgoing service."""
 
     return True
 

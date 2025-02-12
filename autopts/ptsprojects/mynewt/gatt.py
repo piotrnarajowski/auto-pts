@@ -127,7 +127,7 @@ def set_pixits(ptses):
     pts.set_pixit("GATT", "TSPX_iut_use_dynamic_bd_addr", "FALSE")
     pts.set_pixit("GATT", "TSPX_iut_setup_att_over_br_edr", "FALSE")
     pts.set_pixit("GATT", "TSPX_iut_is_client_periphral", "FALSE")
-    pts.set_pixit("GATT", "TSPX_iut_is_server_central", "FALSE")
+    pts.set_pixit("GATT", "TSPX_iut_is_server_central", "TRUE")
     pts.set_pixit("GATT", "TSPX_mtu_size", "23")
     pts.set_pixit("GATT", "TSPX_pin_code", "0000")
     pts.set_pixit("GATT", "TSPX_use_dynamic_pin", "FALSE")
